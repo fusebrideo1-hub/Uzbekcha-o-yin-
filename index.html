@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Block Blast Stiker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bg-layer"></div>
+<canvas id="confetti-canvas"></canvas>
+
+<div id="celebration-box">
+  <div id="cel-sticker">👏</div>
+  <div id="cel-word">BRAVO!</div>
+</div>
+
+<!-- 1. ASOSIY MENYU -->
+<div id="menu-screen" class="screen">
+  <div class="logo-box">
+    <div class="logo-emo">🤩</div>
+    <h1>BLOCK BLAST</h1>
+    <p>Stiker va Soʻzlar Sarguzashti</p>
+  </div>
+  <div class="menu-stats">Rekord: <span id="menu-best">0</span> | Unvon: <span id="menu-rank">Yangi</span></div>
+  <button class="main-btn play-btn" onclick="startPlay()">▶ OʻYNASH</button>
+  <button class="main-btn lvl-btn" onclick="openModal('levels-modal')">🏆 DARAJALAR</button>
+  <button class="main-btn set-btn" onclick="openModal('settings-modal')">⚙️ SOZLAMALAR</button>
+</div>
+
+<!-- 2. O'YIN EKRANI -->
+<div id="game-screen" class="screen" style="display:none">
+  <div id="top-bar">
+    <div id="header">
+      <button class="icon-btn" onclick="goMenu()">🏠</button>
+      <div class="box score">Ball: <span id="score">0</span></div>
+      <div class="box lvl">Daraja: <span id="cur-lvl">1</span></div>
+      <button class="icon-btn" onclick="openModal('settings-modal')">⚙️</button>
+    </div>
+    <div id="word-mission">
+      <span>Soʻz:</span>
+      <div id="target-letters"></div>
+    </div>
+  </div>
+
+  <div id="board-wrap">
+    <div id="board"></div>
+    <div id="tut-hand">👆</div>
+    <div id="tut-hint">Shaklni koʻrsatilgan joyga suring!</div>
+  </div>
+
+  <div id="powerups">
+    <button class="pwr-btn" id="bomb-btn" onclick="activateBomb()">💣 Bomba (<span id="bomb-cnt">1</span>)</button>
+    <button class="pwr-btn" id="swap-btn" onclick="useSwap()">🔄 Almashtirish (<span id="swap-cnt">2</span>)</button>
+  </div>
+
+  <div id="dock"><div class="slot" id="s0"></div><div class="slot" id="s1"></div><div class="slot" id="s2"></div></div>
+</div>
+
+<!-- SOZLAMALAR OYNASI -->
+<div id="settings-modal" class="modal">
+  <div class="modal-card">
+    <h3>⚙️ Sozlamalar</h3>
+    <div class="set-item">
+      <span>Bildirishnomalar:</span>
+      <button class="toggle-btn" id="notif-btn" onclick="requestNotif()">Ruxsat berish 🔔</button>
+    </div>
+    <div class="set-item">
+      <span>Ovoz effektlari:</span>
+      <button class="toggle-btn" id="sfx-btn" onclick="toggleSfx()">Yoqiq 🔊</button>
+    </div>
+    <div class="set-item">
+      <span>Fon musiqasi:</span>
+      <select id="bgm-select" onchange="changeMusic()">
+        <option value="none">Oʻchiq</option>
+        <option value="tetris">Tetris Klassika</option>
+        <option value="lofi">Lo-Fi Sokin</option>
+        <option value="arcade">Arcade Ritm</option>
+        <option value="custom" id="custom-opt" style="display:none">Mening musiqam</option>
+      </select>
+    </div>
+    <label class="file-btn">📁 Telefondan MP3 tanlash<input type="file" accept="audio/*" style="display:none" onchange="loadCustomAudio(event)"></label>
+    <div class="set-item">
+      <span>Orqa fon mavzusi:</span>
+      <select id="bg-select" onchange="changeBg()">
+        <option value="space">🌌 Kosmos</option>
+        <option value="forest">🌲 Oʻrmon</option>
+        <option value="sunset">🌅 Quyosh botishi</option>
+        <option value="neon">🌆 Neon</option>
+        <option value="custom" id="custom-bg-opt" style="display:none">🖼️ Mening rasmim</option>
+      </select>
+    </div>
+    <label class="file-btn">🖼️ Galereyadan fon rasmi<input type="file" accept="image/*" style="display:none" onchange="loadCustomBg(event)"></label>
+    <button class="close-btn" onclick="closeModals()">Saqlash va Yopish</button>
+  </div>
+</div>
+
+<!-- DARAJALAR OYNASI -->
+<div id="levels-modal" class="modal">
+  <div class="modal-card">
+    <h3>🏆 Darajalar</h3>
+    <p class="sub-txt">Har 1000 ballda yangi daraja ochiladi</p>
+    <div id="levels-grid"></div>
+    <button class="close-btn" onclick="closeModals()">Yopish</button>
+  </div>
+</div>
+
+<!-- YUTQAZISH OYNASI -->
+<div id="over">
+  <h2>Oʻyin tugadi!</h2>
+  <p>Toʻplangan ball: <span id="fscore">0</span></p>
+  <button id="btn" onclick="restart()">Qayta oʻynash</button>
+  <button class="sec-btn" onclick="goMenu()">Asosiy menyu</button>
+</div>
+
+<audio id="ap" loop></audio>
+<script src="game.js"></script>
+</body>
+</html>
